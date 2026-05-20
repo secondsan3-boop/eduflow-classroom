@@ -3,19 +3,14 @@
    ========================================== */
 
 // 1. STATE CONFIGURATION & SYSTEM DATA
-let state = {
-    classes: [],
-    assignments: [],
-    submissions: [],
-    activeRole: 'teacher',       // 'teacher' or 'student'
-    activeTab: 'classes',        // 'classes', 'todo', 'analytics'
-    currentClassId: null,        // Active class ID in detailed view
-    currentClassTab: 'stream',   // Inner tab: 'stream' or 'people'
-    activeStudentTodoFilter: 'assigned', // Student todo filters: 'assigned', 'submitted', 'graded'
-    currentUser: {
-        teacher: { name: 'ครูสมศักดิ์ รักเรียน', avatar: '🧑‍🏫', badge: 'ผู้สอนประจำวิชา' },
-        student: { id: 'std_01', name: 'เด็กชายมานะ พากเพียร', avatar: '🎓', badge: 'นักเรียนเรียนดี' }
-    }
+const firebaseConfig = {
+  apiKey: "AIzaSyCc0xE3rcANxByiYV-6lRh7Rcvg58xm1i8",
+  authDomain: "eduflow-db.firebaseapp.com",
+  projectId: "eduflow-db",
+  storageBucket: "eduflow-db.firebasestorage.app",
+  messagingSenderId: "962891234874",
+  appId: "1:962891234874:web:98293951cd097eade7bf03",
+  measurementId: "G-L0X4MPESN4"
 };
 
 // 2. MOCK DATA INITIALIZATION
