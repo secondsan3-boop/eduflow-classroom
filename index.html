@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduFlow 🚀 - ระบบส่งงานและจัดการชั้นเรียนสุดพรีเมียม</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Main Style -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- App Container -->
+    <div class="app-container">
+        
+        <!-- Top Navigation Bar -->
+        <header class="navbar">
+            <div class="nav-brand">
+                <span class="brand-emoji">🚀</span>
+                <div class="brand-text">
+                    <h1>EduFlow</h1>
+                    <span class="brand-subtitle">Classroom Workspace</span>
+                </div>
+            </div>
+            
+            <!-- Dynamic Active Info -->
+            <div class="active-info-badge" id="activeInfoBadge">
+                <div class="pulse-indicator"></div>
+                <span id="activeRoleText">บทบาท: คุณครู</span>
+            </div>
+
+            <!-- Role Switcher -->
+            <div class="role-switcher-container">
+                <span class="switcher-label">บทบาทใช้งาน:</span>
+                <div class="role-toggle-pill">
+                    <button class="role-btn active" id="roleBtnTeacher" onclick="switchRole('teacher')">
+                        <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                        <span>คุณครู</span>
+                    </button>
+                    <button class="role-btn" id="roleBtnStudent" onclick="switchRole('student')">
+                        <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path></svg>
+                        <span>นักเรียน</span>
+                    </button>
+                    <div class="toggle-slider"></div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Body Layout -->
+        <div class="main-layout">
+            
+            <!-- Sidebar Navigation -->
+            <aside class="sidebar">
+                <div class="sidebar-user-card" id="userCard">
+                    <div class="avatar" id="userAvatar">🧑‍🏫</div>
+                    <div class="user-details">
+                        <h3 id="userName">ครูสมศักดิ์ รักเรียน</h3>
+                        <p id="userRoleBadge">ผู้สอนประจำวิชา</p>
+                    </div>
+                </div>
+
+                <nav class="sidebar-menu">
+                    <button class="menu-item active" id="menuBtnClasses" onclick="switchTab('classes')">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+                        <span>ชั้นเรียนทั้งหมด</span>
+                        <span class="menu-badge" id="classesCount">0</span>
+                    </button>
+                    <button class="menu-item" id="menuBtnTodo" onclick="switchTab('todo')">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></nav>
+                        <span id="todoMenuText">งานที่ต้องตรวจ</span>
+                        <span class="menu-badge warning" id="todoCount">0</span>
+                    </button>
+                    <button class="menu-item" id="menuBtnAnalytics" onclick="switchTab('analytics')">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                        <span>รายงาน & สถิติ</span>
+                    </button>
+                </nav>
+
+                <div class="sidebar-footer">
+                    <div class="footer-status">
+                        <span class="status-dot green"></span>
+                        <span>ระบบทำงานแบบ Local (บันทึกข้อมูลแล้ว)</span>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="content-area">
+                
+                <!-- View 1: Classes Dashboard (ทั้งครูและนักเรียน) -->
+                <section class="content-view active" id="viewClasses">
+                    <div class="view-header">
+                        <div class="header-titles">
+                            <h2 class="view-title" id="classesViewTitle">ห้องเรียนที่คุณสอน</h2>
+                            <p class="view-description" id="classesViewDesc">จัดการคลาสเรียน การมอบหมายงาน และติดตามนักเรียนของคุณได้ง่ายๆ</p>
+                        </div>
+                        <div class="header-actions">
+                            <!-- จะแสดงปุ่มตาม Role -->
+                            <button class="btn btn-primary" id="btnCreateClass" onclick="openModal('modalCreateClass')">
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                <span>สร้างชั้นเรียนใหม่</span>
+                            </button>
+                            <button class="btn btn-secondary hidden" id="btnJoinClass" onclick="openModal('modalJoinClass')">
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+                                <span>เข้าร่วมชั้นเรียน</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Classes Grid List -->
+                    <div class="classes-grid" id="classesGrid">
+                        <!-- Dynamic content loaded from app.js -->
+                    </div>
+                </section>
+
+                <!-- View 2: To-Do / Grading (ฝั่งครู = ตรวจงาน, ฝั่งนักเรียน = งานที่ค้างส่ง) -->
+                <section class="content-view" id="viewTodo">
+                    <div class="view-header">
+                        <div class="header-titles">
+                            <h2 class="view-title" id="todoViewTitle">งานที่ต้องตรวจทั้งหมด</h2>
+                            <p class="view-description" id="todoViewDesc">รายการงานที่นักเรียนส่งเข้ามา รอคอยการให้คะแนนและติชมจากคุณ</p>
+                        </div>
+                        <!-- กรองข้อมูลงาน (ถ้ามี) -->
+                        <div class="todo-tabs" id="studentTodoTabs">
+                            <button class="todo-tab active" id="tabAssigned" onclick="filterStudentTodo('assigned')">ค้างส่ง (Assigned)</button>
+                            <button class="todo-tab" id="tabSubmitted" onclick="filterStudentTodo('submitted')">ส่งแล้ว (Submitted)</button>
+                            <button class="todo-tab" id="tabGraded" onclick="filterStudentTodo('graded')">ตรวจแล้ว (Graded)</button>
+                        </div>
+                    </div>
+
+                    <!-- Tasks List Container -->
+                    <div class="todo-list-container" id="todoList">
+                        <!-- Dynamic list generated from app.js -->
+                    </div>
+                </section>
+
+                <!-- View 3: Analytics / Statistics -->
+                <section class="content-view" id="viewAnalytics">
+                    <div class="view-header">
+                        <div class="header-titles">
+                            <h2 class="view-title">สถิติและรายงานสรุป</h2>
+                            <p class="view-description">ภาพรวมความก้าวหน้าและการมีส่วนร่วมของนักเรียนภายในห้องเรียนของคุณ</p>
+                        </div>
+                    </div>
+
+                    <!-- Analytics Dashboard Elements -->
+                    <div class="analytics-dashboard" id="analyticsDashboard">
+                        <!-- Cards & Mini graphs dynamically loaded from app.js -->
+                    </div>
+                </section>
+
+                <!-- View 4: Class Details View (เมื่อคลิกเข้าห้องเรียนย่อย) -->
+                <section class="content-view" id="viewClassDetails">
+                    <div class="class-detail-banner" id="classBanner">
+                        <button class="back-btn" onclick="switchTab('classes')">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                            <span>กลับหน้าหลัก</span>
+                        </button>
+                        <div class="banner-content">
+                            <span class="subject-tag" id="classDetailSubject">หมวดวิชาคอมพิวเตอร์</span>
+                            <h2 id="classDetailName">วิทยาการคำนวณ ม.3/1</h2>
+                            <div class="banner-meta">
+                                <span class="meta-item">
+                                    <strong>รหัสชั้นเรียน:</strong> <code id="classDetailCode">A8F9X4</code>
+                                    <button class="copy-code-btn" onclick="copyClassCode()" title="คัดลอกรหัส">
+                                        <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                    </button>
+                                </span>
+                                <span class="meta-item" id="classDetailRoom">ห้อง: LAB 2</span>
+                                <span class="meta-item" id="classDetailStudentsCount">นักเรียน: 0 คน</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Inner Navigation for Class Details -->
+                    <div class="class-inner-nav">
+                        <button class="inner-nav-btn active" id="innerNavStream" onclick="switchClassTab('stream')">หน้าฟีดกิจกรรม (Stream)</button>
+                        <button class="inner-nav-btn" id="innerNavPeople" onclick="switchClassTab('people')">สมาชิกในชั้นเรียน (People)</button>
+                    </div>
+
+                    <!-- Class details panels -->
+                    <div class="class-inner-content">
+                        
+                        <!-- Panel A: Stream (รายการงานมอบหมายในคลาสนี้) -->
+                        <div class="inner-panel active" id="panelStream">
+                            <div class="panel-header">
+                                <h3>งานมอบหมายทั้งหมด</h3>
+                                <button class="btn btn-primary" id="btnCreateAssignment" onclick="openModal('modalCreateAssignment')">
+                                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                    <span>สั่งงานใหม่</span>
+                                </button>
+                            </div>
+                            <div class="assignments-list" id="classAssignmentsList">
+                                <!-- Dynamic List -->
+                            </div>
+                        </div>
+
+                        <!-- Panel B: People (รายชื่อครูและนักเรียนในคลาสนี้) -->
+                        <div class="inner-panel" id="panelPeople">
+                            <div class="people-section">
+                                <h4>คุณครูผู้สอน</h4>
+                                <div class="people-list" id="classTeachersList">
+                                    <!-- Dynamic -->
+                                </div>
+                            </div>
+                            <div class="people-section">
+                                <h4>นักเรียนร่วมชั้น</h4>
+                                <div class="people-list" id="classStudentsList">
+                                    <!-- Dynamic -->
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- ==================== MODALS ==================== -->
+
+    <!-- Modal 1: สร้างชั้นเรียนใหม่ (ครู) -->
+    <div class="modal" id="modalCreateClass">
+        <div class="modal-content glass">
+            <div class="modal-header">
+                <h3>สร้างชั้นเรียนของคุณ 🏫</h3>
+                <button class="close-btn" onclick="closeModal('modalCreateClass')">&times;</button>
+            </div>
+            <form id="formCreateClass" onsubmit="handleCreateClass(event)">
+                <div class="form-group">
+                    <label for="newClassName">ชื่อชั้นเรียน (เช่น ม.3/1)</label>
+                    <input type="text" id="newClassName" required placeholder="ป้อนชื่อห้องเรียน หรือชั้นเรียนของคุณ...">
+                </div>
+                <div class="form-group">
+                    <label for="newClassSubject">วิชา / คำอธิบายสั้นๆ</label>
+                    <input type="text" id="newClassSubject" required placeholder="เช่น วิทยาการคอมพิวเตอร์, ภาษาไทย ม.ปลาย...">
+                </div>
+                <div class="form-group">
+                    <label for="newClassRoom">ห้องเรียน (ระบุหรือไม่ก็ได้)</label>
+                    <input type="text" id="newClassRoom" placeholder="เช่น LAB 4, ห้อง 421...">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modalCreateClass')">ยกเลิก</button>
+                    <button type="submit" class="btn btn-primary">สร้างเลย 🚀</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 2: เข้าร่วมชั้นเรียน (นักเรียน) -->
+    <div class="modal" id="modalJoinClass">
+        <div class="modal-content glass">
+            <div class="modal-header">
+                <h3>เข้าร่วมชั้นเรียนใหม่ 🏫</h3>
+                <button class="close-btn" onclick="closeModal('modalJoinClass')">&times;</button>
+            </div>
+            <form id="formJoinClass" onsubmit="handleJoinClass(event)">
+                <div class="form-group">
+                    <label for="joinClassCode">รหัสผ่านห้องเรียน (Class Code)</label>
+                    <input type="text" id="joinClassCode" required placeholder="ป้อนรหัส 6 หลักที่ครูแจกให้ (เช่น A8F9X4)" maxlength="6" style="text-transform: uppercase;">
+                    <small class="form-help">โปรดสอบถามรหัสเข้าห้องเรียนจากคุณครูผู้สอนของคุณ</small>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modalJoinClass')">ยกเลิก</button>
+                    <button type="submit" class="btn btn-primary">เข้าร่วมชั้นเรียน 🎓</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 3: สร้างการมอบหมายงานใหม่ (ครู) -->
+    <div class="modal" id="modalCreateAssignment">
+        <div class="modal-content glass">
+            <div class="modal-header">
+                <h3>มอบหมายงานใหม่ 📝</h3>
+                <button class="close-btn" onclick="closeModal('modalCreateAssignment')">&times;</button>
+            </div>
+            <form id="formCreateAssignment" onsubmit="handleCreateAssignment(event)">
+                <div class="form-group">
+                    <label for="assignTitle">หัวข้อความสั่งงาน</label>
+                    <input type="text" id="assignTitle" required placeholder="ป้อนหัวข้องาน เช่น ทำเว็บไซต์ส่วนตัวด้วย HTML...">
+                </div>
+                <div class="form-group">
+                    <label for="assignDesc">คำอธิบายและข้อตกลงงาน</label>
+                    <textarea id="assignDesc" rows="4" required placeholder="ระบุสิ่งที่ต้องการให้นักเรียนปฏิบัติ เกณฑ์การให้คะแนน..."></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label for="assignPoints">คะแนนเต็ม</label>
+                        <input type="number" id="assignPoints" required value="10" min="1">
+                    </div>
+                    <div class="form-group col">
+                        <label for="assignDueDate">กำหนดส่ง (Due Date)</label>
+                        <input type="datetime-local" id="assignDueDate" required>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modalCreateAssignment')">ยกเลิก</button>
+                    <button type="submit" class="btn btn-primary">สั่งงานทันที 🔔</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 4: ส่งงานของนักเรียน (นักเรียน) -->
+    <div class="modal" id="modalSubmitAssignment">
+        <div class="modal-content glass">
+            <div class="modal-header">
+                <h3>ส่งผลงานวิชาเรียน 📤</h3>
+                <button class="close-btn" onclick="closeModal('modalSubmitAssignment')">&times;</button>
+            </div>
+            <div class="assignment-submit-info" id="submitInfoPanel">
+                <!-- ข้อมูลจำเพาะของงานที่จะส่ง -->
+            </div>
+            <form id="formSubmitAssignment" onsubmit="handleSubmitAssignment(event)">
+                <input type="hidden" id="submitAssignmentId">
+                <input type="hidden" id="submitClassId">
+                
+                <div class="form-group">
+                    <label for="submitText">คำตอบของคุณ / ลิงก์แนบผลงาน</label>
+                    <textarea id="submitText" rows="4" required placeholder="พิมพ์ข้อความตอบคำสั่งงาน หรือระบุ URL ลิงก์ไปยังโปรเจกต์งานของคุณ..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="submitFileName">แนบไฟล์ผลงาน (จำลองระบบอัปโหลด)</label>
+                    <div class="file-upload-mock">
+                        <input type="file" id="submitFile" onchange="updateMockFileName(this)">
+                        <div class="mock-upload-btn">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                            <span id="fileUploadText">คลิกเพื่ออัปโหลดไฟล์ (PDF, ZIP, PNG, JPG)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modalSubmitAssignment')">ยกเลิก</button>
+                    <button type="submit" class="btn btn-primary">ส่งงาน 🚀</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 5: ตรวจงานและให้คะแนน (ครู) -->
+    <div class="modal" id="modalGradeSubmission">
+        <div class="modal-content glass">
+            <div class="modal-header">
+                <h3>ตรวจประเมินผลการส่งงาน 🧐</h3>
+                <button class="close-btn" onclick="closeModal('modalGradeSubmission')">&times;</button>
+            </div>
+            
+            <div class="grading-panel">
+                <!-- ส่วนซ้าย: รายละเอียดงานส่งของนักเรียน -->
+                <div class="submission-view-details">
+                    <div class="submission-meta">
+                        <span class="student-name-tag" id="gradeStudentName">นักเรียน: นายมีชัย สุขใจ</span>
+                        <span class="submit-time-tag" id="gradeSubmitTime">ส่งเมื่อ: 20/05/2026 14:32</span>
+                    </div>
+                    <div class="submitted-content-box">
+                        <h5>ข้อความ/คำตอบ:</h5>
+                        <p id="gradeSubmittedText">นี่คือคำตอบของผมครับ...</p>
+                        
+                        <div id="gradeAttachmentBox" class="attachment-box hidden">
+                            <h5>ไฟล์แนบผลงาน:</h5>
+                            <a href="#" id="gradeAttachmentLink" class="file-download-btn" target="_blank">
+                                <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                                <span id="gradeAttachmentName">project_final.zip</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ส่วนขวา: ฟอร์มการให้คะแนนและติชม -->
+                <form id="formGradeSubmission" onsubmit="handleGradeSubmission(event)">
+                    <input type="hidden" id="gradeSubmissionId">
+                    
+                    <div class="form-group">
+                        <label for="gradeScore">คะแนนที่ได้ (เต็ม <span id="gradeMaxPoints">10</span> คะแนน)</label>
+                        <input type="number" id="gradeScore" required min="0" step="0.5" value="8">
+                    </div>
+                    <div class="form-group">
+                        <label for="gradeFeedback">ข้อติชม / คำแนะนำย้อนกลับ</label>
+                        <textarea id="gradeFeedback" rows="3" placeholder="เขียนคำแนะนำ คำชม หรือคำติติงเพื่อให้นักเรียนนำไปปรับปรุงแก้ไข..."></textarea>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('modalGradeSubmission')">ยกเลิก</button>
+                        <button type="submit" class="btn btn-success">ส่งผลการตรวจ ✔️</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert / Toast System (แจ้งเตือนความพรีเมียม) -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Application Script -->
+    <script src="app.js"></script>
+</body>
+</html>
